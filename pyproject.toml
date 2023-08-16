@@ -9,6 +9,8 @@ packages = [{include = "webstore_project"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 django = "^4.2.4"
+pillow = "^10.0.0"
+psycopg2 = "^2.9.7"
 
 
 [build-system]
