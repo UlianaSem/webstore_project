@@ -1,0 +1,115 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "Книги",
+      "description": null
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Товары для дома",
+      "description": null
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "name": "Бытовая техника",
+      "description": null
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+      "name": "Электроника",
+      "description": null
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 5,
+    "fields": {
+      "name": "Еда",
+      "description": null
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 6,
+    "fields": {
+      "name": "Товары для животных",
+      "description": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "Война и мир, Л. Н. Толстой",
+      "description": "",
+      "picture": "",
+      "category_id": 1,
+      "price": 799.0,
+      "create_date": "2023-08-16",
+      "change_date": "2023-08-16"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "Электрический чайник Goodhelper KS-18B08",
+      "description": "",
+      "picture": "",
+      "category_id": 3,
+      "price": 600.0,
+      "create_date": "2023-08-16",
+      "change_date": "2023-08-16"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "name": "Сок Добрый, яблочный",
+      "description": "",
+      "picture": "",
+      "category_id": 5,
+      "price": 90.0,
+      "create_date": "2023-08-16",
+      "change_date": "2023-08-16"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+      "name": "Сухой корм для кошек Pro Plan с индейкой",
+      "description": "",
+      "picture": "",
+      "category_id": 6,
+      "price": 1299.0,
+      "create_date": "2023-08-16",
+      "change_date": "2023-08-16"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+      "name": "Скатерть 365 Дней одноразовая",
+      "description": "",
+      "picture": "",
+      "category_id": 2,
+      "price": 104.0,
+      "create_date": "2023-08-16",
+      "change_date": "2023-08-16"
+    }
+  }
+]
