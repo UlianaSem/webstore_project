@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from catalog.models import Product
+from catalog.models import Product, ContactData
 
 
 def home(request):
@@ -13,4 +13,7 @@ def contacts(request):
         name = request.POST.get('name')
         email = request.POST.get('email')
         print(f'User {name} asks to contact her/him by email {email}')
-    return render(request, 'catalog/contacts.html')
+
+    contact_data = ContactData.objects.get(pk=1).__dict__
+
+    return render(request, 'catalog/contacts.html', contact_data)
