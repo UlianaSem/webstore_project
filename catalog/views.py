@@ -34,3 +34,24 @@ def product(request, pk):
     }
 
     return render(request, 'catalog/product.html', context)
+
+
+def add_product(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        picture = request.POST.get('picture')
+        price = request.POST.get('price')
+
+        Product.objects.create(
+            name=name,
+            description=description,
+            picture=picture,
+            price=float(price)
+        )
+
+    context = {
+        'title': 'Предложите товар'
+    }
+
+    return render(request, 'catalog/add_product.html', context)
