@@ -5,7 +5,12 @@ from catalog.models import Product, ContactData
 def home(request):
     print(Product.objects.reverse()[:5])
 
-    return render(request, 'catalog/home.html')
+    context = {
+        'object_list': Product.objects.all(),
+        'title': 'Главная страница'
+    }
+
+    return render(request, 'catalog/home.html', context)
 
 
 def contacts(request):
@@ -14,6 +19,18 @@ def contacts(request):
         email = request.POST.get('email')
         print(f'User {name} asks to contact her/him by email {email}')
 
-    contact_data = ContactData.objects.get(pk=1).__dict__
+    context = {
+        'object_list': ContactData.objects.get(pk=1),
+        'title': 'Контакты'
+    }
 
-    return render(request, 'catalog/contacts.html', contact_data)
+    return render(request, 'catalog/contacts.html', context)
+
+
+def product(request, pk):
+    context = {
+        'object_list': Product.objects.get(pk=pk),
+        'title': 'Страница товара'
+    }
+
+    return render(request, 'catalog/product.html', context)
