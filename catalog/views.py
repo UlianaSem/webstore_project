@@ -1,12 +1,20 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from catalog.models import Product, ContactData
 
 
 def home(request):
     print(Product.objects.reverse()[:5])
 
+    products = Product.objects.all()
+    paginator = Paginator(products, 12)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'object_list': Product.objects.all(),
+        'object_list': products,
+        'page_obj': page_obj,
         'title': 'Главная страница'
     }
 
