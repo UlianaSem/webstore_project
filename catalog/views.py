@@ -1,65 +1,51 @@
-from django.shortcuts import render
-from django.core.paginator import Paginator
+from django.shortcuts import render, redirect
 from catalog.models import Product, ContactData
+from django.views.generic import DetailView, ListView, CreateView
+from django.urls import reverse_lazy
 
 
-def home(request):
-    print(Product.objects.reverse()[:5])
-
-    products = Product.objects.all()
-    paginator = Paginator(products, 12)
-
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    context = {
-        'object_list': products,
-        'page_obj': page_obj,
+class ProductListView(ListView):
+    paginate_by = 12
+    model = Product
+    extra_context = {
         'title': 'Главная страница'
     }
 
-    return render(request, 'catalog/home.html', context)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        length = len(queryset)
+        print(queryset[length-5:length])
+
+        return queryset
 
 
-def contacts(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        print(f'User {name} asks to contact her/him by email {email}')
-
-    context = {
-        'object_list': ContactData.objects.get(pk=1),
+class ContactListView(ListView):
+    model = ContactData
+    extra_context = {
         'title': 'Контакты'
     }
 
-    return render(request, 'catalog/contacts.html', context)
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request)
+
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            print(f'User {name} asks to contact her/him by email {email}')
+
+            return redirect('catalog:home')
+
+        return response
 
 
-def product(request, pk):
-    context = {
-        'object_list': Product.objects.get(pk=pk),
+class ProductDetailView(DetailView):
+    model = Product
+    extra_context = {
         'title': 'Страница товара'
     }
 
-    return render(request, 'catalog/product.html', context)
 
-
-def add_product(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        description = request.POST.get('description')
-        picture = request.POST.get('picture')
-        price = request.POST.get('price')
-
-        Product.objects.create(
-            name=name,
-            description=description,
-            picture=picture,
-            price=float(price)
-        )
-
-    context = {
-        'title': 'Предложите товар'
-    }
-
-    return render(request, 'catalog/add_product.html', context)
+class ProductCreateView(CreateView):
+    model = Product
+    fields = ('name', 'description', 'picture', 'price', )
+    success_url = reverse_lazy('catalog:home')
