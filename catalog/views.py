@@ -1,4 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
+
+from catalog.forms import ProductForm
 from catalog.models import Product, ContactData
 from django.views.generic import DetailView, ListView, CreateView
 from django.urls import reverse_lazy
@@ -47,5 +49,5 @@ class ProductDetailView(DetailView):
 
 class ProductCreateView(CreateView):
     model = Product
-    fields = ('name', 'description', 'picture', 'price', )
+    form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
