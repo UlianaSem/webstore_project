@@ -1,10 +1,13 @@
 from django.shortcuts import redirect
 
 from catalog.forms import ProductForm
-from catalog.models import Product, ContactData
+from catalog.models import Product, ContactData, Version
 from django.views.generic import DetailView, ListView, CreateView
 from django.urls import reverse_lazy
 
+
+"""
+При наличии активной версии реализуйте вывод в список продуктов информации об активной версии."""
 
 class ProductListView(ListView):
     paginate_by = 12
