@@ -1,20 +1,46 @@
 {% extends 'catalog/base.html' %}
+{% load crispy_forms_tags %}
+
 {% block content %}
-    <div class="row text-start">
-        <div class="col-lg-9 col-md-6 col-sm-12">
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Заполните поля о товаре</h4>
-                </div>
-                <div class="card-body">
-                    <form method="post" action="" class="form-floating" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{ form.as_p }}
-                            <button type="submit" class="btn btn-primary">Создать</button>
-                    </form>
+    <div class="col-12">
+        <form class="row" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-6">
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Заполните поля о товаре</h4>
+                    </div>
+                    <div class="card-body">
+                                {{ form|crispy }}
+                                <button type="submit" class="btn btn-primary">
+                                    {% if object %}
+                                        Изменить
+                                    {% else %}
+                                        Создать
+                                    {% endif %}
+                                </button>
+                    </div>
                 </div>
             </div>
-        </div>
+            {% if object %}
+                <div class="col-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Заполните информацию о версии</h4>
+                        </div>
+                        <div class="card-body">
+                                    {{ formset.management_form|crispy }}
+                                    {% for form in formset.forms %}
+                                        {{ form.as_p }}
+                                        {% if not forloop.last %}
+                                            <hr>
+                                        {% endif %}
+                                    {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </form>
     </div>
 
 {% endblock %}
