@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    "crispy_forms",
+    "crispy_bootstrap4",
+
     'catalog',
     'blog',
 ]
@@ -141,3 +144,7 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = os.getenv('YANDEX_USER')
 EMAIL_HOST_PASSWORD = os.getenv('YANDEX_PASSWORD')
 EMAIL_USE_SSL = True
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
