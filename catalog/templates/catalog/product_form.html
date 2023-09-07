@@ -30,6 +30,7 @@
                         </div>
                         <div class="card-body">
                                     {{ formset.management_form|crispy }}
+                                    {{ formset.non_form_errors }}
                                     {% for form in formset.forms %}
                                         {{ form.as_p }}
                                         {% if not forloop.last %}

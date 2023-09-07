@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import BaseInlineFormSet
 
 from catalog.models import Product, Version
 
@@ -36,3 +37,14 @@ class VersionForm(forms.ModelForm):
     class Meta:
         model = Version
         fields = "__all__"
+
+
+class CustomInlineFormSet(BaseInlineFormSet):
+    def clean(self):
+        super().clean()
+
+        is_active_count = len([form for form in self.forms if form.instance.is_active])
+
+        if is_active_count > 1:
+            raise forms.ValidationError('Может быть только одна активная версия. Прежде чем создать новую, '
+                                        'деактивируйте предыдущую')
