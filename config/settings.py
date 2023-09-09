@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap4",
 
+    'users',
     'catalog',
     'blog',
 ]
@@ -148,3 +149,5 @@ EMAIL_USE_SSL = True
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+AUTH_USER_MODEL = 'users.User'
