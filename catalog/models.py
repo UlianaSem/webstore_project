@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -24,6 +25,8 @@ class Product(models.Model):
     price = models.FloatField(verbose_name='цена', **NULLABLE)
     create_date = models.DateField(verbose_name='дата создания', **NULLABLE, auto_now_add=True)
     change_date = models.DateField(verbose_name='дата изменения', **NULLABLE, auto_now=True)
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='владелец', **NULLABLE)
 
     def __str__(self):
         return f'{self.name} {self.price} в категории {self.category_id}'

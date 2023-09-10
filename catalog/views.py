@@ -53,6 +53,13 @@ class ProductCreateView(CreateView):
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
 
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+
+        return super().form_valid(form)
+
 
 class ProductUpdateView(UpdateView):
     model = Product
@@ -78,6 +85,9 @@ class ProductUpdateView(UpdateView):
         context_data = self.get_context_data()
         formset = context_data['formset']
         self.object = form.save()
+
+        self.object.owner = self.request.user
+        self.object.save()
 
         if formset.is_valid():
             formset.instance = self.object
