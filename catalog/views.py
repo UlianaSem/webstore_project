@@ -14,13 +14,6 @@ class ProductListView(ListView):
         'title': 'Главная страница'
     }
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        length = len(queryset)
-        print(queryset[length-5:length])
-
-        return queryset
-
 
 class ContactListView(ListView):
     model = ContactData
