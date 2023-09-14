@@ -2,9 +2,11 @@ from django.forms import inlineformset_factory
 from django.shortcuts import redirect
 
 from catalog.forms import ProductForm, VersionForm, CustomInlineFormSet
-from catalog.models import Product, ContactData, Version
+from catalog.models import Product, ContactData, Version, Category
 from django.views.generic import DetailView, ListView, CreateView, UpdateView
 from django.urls import reverse_lazy, reverse
+
+from catalog.services import get_cache_categories
 
 
 class ProductListView(ListView):
@@ -90,3 +92,13 @@ class ProductUpdateView(UpdateView):
             return self.form_invalid(form)
 
         return super().form_valid(form)
+
+
+class CategoryListView(ListView):
+    model = Category
+    extra_context = {
+        'title': 'Категории'
+    }
+
+    def get_queryset(self):
+        return get_cache_categories()

@@ -1,0 +1,23 @@
+{% extends 'catalog/base.html' %}
+{% load catalog_tags %}
+
+{% block content %}
+    <div class="row text-center g-2">
+        {% for object in object_list %}
+            <div class="col-3">
+                <div class="card mb-4 box-shadow h-100">
+                    <div class="card-header">
+                        <h5 class="my-0 font-weight-normal">{{ object.name}}</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if object.description %}
+                            <p class="card-text">{{ object.description|cut_string:50 }}</p>
+                        {% endif %}
+                        <a href="#" type="button" class="btn btn-lg btn-block btn-outline-primary">Перейти</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
