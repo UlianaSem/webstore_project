@@ -1,5 +1,6 @@
 import os
 
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView, DetailView, DeleteView, ListView
 from blog.models import Blog
 from django.urls import reverse_lazy, reverse
@@ -44,10 +45,11 @@ class BlogDetailView(DetailView):
         return self.object
 
 
-class BlogCreateView(CreateView):
+class BlogCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Blog
     fields = ('title', 'content', 'preview', )
     success_url = reverse_lazy('blog:home')
+    permission_required = 'blog.add_blog'
 
     def form_valid(self, form):
         if form.is_valid():
@@ -57,15 +59,17 @@ class BlogCreateView(CreateView):
         return super().form_valid(form)
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Blog
     fields = ('title', 'content', 'preview', )
     success_url = reverse_lazy('blog:home')
+    permission_required = 'blog.change_blog'
 
     def get_success_url(self):
         return reverse('blog:article', args=[self.object.pk])
 
 
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Blog
     success_url = reverse_lazy('blog:home')
+    permission_required = 'blog.delete_blog'

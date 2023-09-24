@@ -2,9 +2,13 @@
 {% load catalog_tags %}
 
 {% block content %}
-    <div class="col-12 mb-5">
-        <a class="btn btn-outline-primary" href="{% url 'blog:create_article' %}">Добавить статью</a>
-    </div>
+    {% if user.is_authenticated %}
+        {% if perms.blog.add_blog %}
+            <div class="col-12 mb-5">
+                <a class="btn btn-outline-primary" href="{% url 'blog:create_article' %}">Добавить статью</a>
+            </div>
+        {% endif %}
+    {% endif %}
     <div class="row text-center g-2">
         {% for object in object_list %}
             <div class="col-3">
@@ -20,8 +24,14 @@
                             <li>{{ object.content|cut_string:100 }}</li>
                         </ul>
                         <a href="{% url 'blog:article' object.pk %}" type="button" class="btn btn-lg btn-block btn-outline-primary">Посмотреть</a>
-                        <a href="{% url 'blog:update_article' object.pk %}" type="button" class="btn btn-lg btn-block btn-outline-primary">Изменить</a>
-                        <a href="{% url 'blog:delete_article' object.pk %}" type="button" class="btn btn-lg btn-block btn-outline-danger">Удалить</a>
+                        {% if user.is_authenticated %}
+                            {% if perms.blog.change_blog %}
+                                <a href="{% url 'blog:update_article' object.pk %}" type="button" class="btn btn-lg btn-block btn-outline-primary">Изменить</a>
+                            {% endif %}
+                            {% if perms.blog.delete_blog %}
+                                <a href="{% url 'blog:delete_article' object.pk %}" type="button" class="btn btn-lg btn-block btn-outline-danger">Удалить</a>
+                            {% endif %}
+                        {% endif %}
                     </div>
                     <div class="card-footer">
                         <p>{{ object.create_data }}</p>

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import redirect
 
@@ -43,10 +44,11 @@ class ProductDetailView(DetailView):
     }
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
+    permission_required = 'catalog.add_product'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -56,9 +58,10 @@ class ProductCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
+    permission_required = 'catalog.change_product'
 
     def get_success_url(self):
         return reverse('catalog:product', args=[self.object.pk])
