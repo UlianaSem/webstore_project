@@ -61,7 +61,8 @@ class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    permission_required = 'catalog.change_product'
+    permission_required = ['catalog.change_product', 'catalog.set_published', 'catalog.change_description',
+                           'catalog.change_category']
 
     def get_success_url(self):
         return reverse('catalog:product', args=[self.object.pk])
