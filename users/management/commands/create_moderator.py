@@ -1,8 +1,3 @@
-"""Задание 1
-Продолжаем работать с проектом. Создайте группу для роли модератора и опишите необходимые доступы:
-    может отменять публикацию продукта,
-    может менять описание любого продукта,
-    может менять категорию любого продукта."""
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.core.management import BaseCommand
