@@ -25,6 +25,7 @@ class Product(models.Model):
     price = models.FloatField(verbose_name='цена', **NULLABLE)
     create_date = models.DateField(verbose_name='дата создания', **NULLABLE, auto_now_add=True)
     change_date = models.DateField(verbose_name='дата изменения', **NULLABLE, auto_now=True)
+    is_published = models.BooleanField(verbose_name="опубликовано", default=False)
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='владелец', **NULLABLE)
 
@@ -34,6 +35,17 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
+        permissions = [
+            (
+                'set_published', 'Can publish product'
+            ),
+            (
+                'change_description', 'Can change product description'
+            ),
+            (
+                'change_category', 'Can change product category'
+            ),
+        ]
 
 
 class ContactData(models.Model):
