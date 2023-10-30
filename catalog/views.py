@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.models import Permission
 from django.forms import inlineformset_factory
 from django.shortcuts import redirect
 
-from catalog.forms import ProductForm, VersionForm, CustomInlineFormSet
+from catalog.forms import ProductForm, VersionForm, CustomInlineFormSet,ProductModeratorForm
 from catalog.models import Product, ContactData, Version, Category
 from django.views.generic import DetailView, ListView, CreateView, UpdateView
 from django.urls import reverse_lazy, reverse
@@ -60,9 +61,34 @@ class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 
 class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
-    form_class = ProductForm
-    permission_required = ['catalog.change_product', 'catalog.set_published', 'catalog.change_description',
-                           'catalog.change_category']
+    form_class = {"Owner": ProductForm, "Moderator": ProductModeratorForm}
+    permission_required = {"Owner": ['catalog.change_product'],
+                           "Moderator": ['catalog.set_published', 'catalog.change_description',
+                                         'catalog.change_category']}
+
+    def has_permission(self):
+        perms = self.get_permission_required()
+
+        if self.request.user == self.get_object().owner:
+
+            perms = perms.get("Owner")
+
+        elif "Moderator" in [group.name for group in self.request.user.groups.all()]:
+            perms = perms.get("Moderator")
+
+        else:
+            return False
+
+        return self.request.user.has_perms(perms)
+
+    def get_form_class(self):
+        form_class = super().get_form_class()
+
+        if self.request.user == self.get_object().owner:
+            return form_class.get("Owner")
+
+        elif "Moderator" in [group.name for group in self.request.user.groups.all()]:
+            return form_class.get("Moderator")
 
     def get_success_url(self):
         return reverse('catalog:product', args=[self.object.pk])
