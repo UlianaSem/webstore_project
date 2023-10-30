@@ -32,6 +32,24 @@ class ProductForm(forms.ModelForm):
         return self._clean(cleaned_data)
 
 
+class ProductModeratorForm(forms.ModelForm):
+
+    PROHIBITED_GOODS = {'казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар'}
+
+    class Meta:
+        model = Product
+        fields = ['description', 'category_id', 'is_published']
+
+    def clean_description(self):
+        cleaned_data = self.cleaned_data['description']
+        cleaned_data_list = set(cleaned_data.lower().split(' '))
+
+        if self.PROHIBITED_GOODS.intersection(cleaned_data_list):
+            raise forms.ValidationError("Вы пытаетесь добавить запрещенный товар. Попробуйте добавить другой товар.")
+
+        return cleaned_data
+
+
 class VersionForm(forms.ModelForm):
 
     class Meta:
